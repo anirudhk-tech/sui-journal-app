@@ -1,73 +1,23 @@
-import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
-import { isValidSuiObjectId } from "@mysten/sui/utils";
-import { Box, Button, Container, Flex, Heading } from "@radix-ui/themes";
-import { useState } from "react";
-import { Counter } from "./Counter";
-import { CreateCounter } from "./CreateCounter";
+import { JournalGallery } from "./JournalGallery";
 
-function App() {
-  const currentAccount = useCurrentAccount();
-  const [counterId, setCounter] = useState(() => {
-    const hash = window.location.hash.slice(1);
-    return isValidSuiObjectId(hash) ? hash : null;
-  });
-
-  return (
-    <>
-      <Flex
-        position="sticky"
-        px="4"
-        py="2"
-        justify="between"
-        style={{
-          borderBottom: "1px solid var(--gray-a2)",
-        }}
-      >
-        <Box>
-          <Heading>dApp Starter Template</Heading>
-        </Box>
-
-        <Box>
-          <Flex gap="2" align="center">
-            {currentAccount && (
-              <Button
-                variant="soft"
-                onClick={() => {
-                  window.open(`https://faucet.sui.io/?address=${currentAccount.address}`, '_blank');
-                }}
-              >
-                Get Testnet SUI
-              </Button>
-            )}
-            <ConnectButton />
-          </Flex>
-        </Box>
-      </Flex>
-      <Container>
-        <Container
-          mt="5"
-          pt="2"
-          px="4"
-          style={{ background: "var(--gray-a2)", minHeight: 500 }}
-        >
-          {currentAccount ? (
-            counterId ? (
-              <Counter id={counterId} />
-            ) : (
-              <CreateCounter
-                onCreated={(id) => {
-                  window.location.hash = id;
-                  setCounter(id);
-                }}
-              />
-            )
-          ) : (
-            <Heading>Please connect your wallet</Heading>
-          )}
-        </Container>
-      </Container>
-    </>
-  );
-}
-
-export default App;
+// Inside the Flex where JournalList is rendered:
+<Flex direction="column" gap="6">
+  <CreateJournal
+    onCreated={(id) => {
+      window.location.hash = id;
+      setJournal(id);
+    }}
+  />
+  <JournalList
+    onSelectJournal={(id) => {
+      window.location.hash = id;
+      setJournal(id);
+    }}
+  />
+  <JournalGallery
+    onSelectJournal={(id) => {
+      window.location.hash = id;
+      setJournal(id);
+    }}
+  />
+</Flex>;
